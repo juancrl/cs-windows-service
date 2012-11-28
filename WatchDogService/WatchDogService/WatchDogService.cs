@@ -11,18 +11,22 @@ using System.IO;
 namespace WatchDogService
 {
     partial class WatchDogService : ServiceBase
-    {
-        private FileSystemWatcher Watcher = null;
+    {        
         private FSWatcher FSWatcher = null;
+        private string[] args = null;
         public WatchDogService()
         {
             InitializeComponent();
         }
-
+        
         protected override void OnStart(string[] args)
         {
-            Watcher = new FileSystemWatcher(@"D:\Practice");
-            FSWatcher = new FSWatcher(Watcher);            
+            //System.Diagnostics.Debugger.Launch();
+            if (args.Length < 2)
+            {
+                args = new string[] { Environment.SystemDirectory.ToString(), Environment.SystemDirectory.ToString() };
+            }
+            FSWatcher = new FSWatcher(args);
             FSWatcher.RunService();
         }
 

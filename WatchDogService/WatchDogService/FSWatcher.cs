@@ -1,54 +1,110 @@
 ﻿using System.IO;
+using System;
 
 namespace WatchDogService
 {
     public class FSWatcher
     {
+        private FileSystemWatcher InputWatcher { get; set; }
+        private FileSystemWatcher OutputWatcher { get; set; }
+        private string InputFolder { get; set; }
+        private string OutputFolder { get; set; }
+
         public FSWatcher() { }
+        public FSWatcher(string[] args)
+        {
+            InputWatcher = new FileSystemWatcher(args[0]);
+            OutputWatcher = new FileSystemWatcher(args[1]);
+            InputFolder = args[0];
+            OutputFolder = args[1];
+        }
 
-        public FSWatcher(FileSystemWatcher FSW) { Watcher = FSW; }
-
-        private FileSystemWatcher Watcher { get; set; }
 
         public void RunService()
         {
-            FileSystemWatcher watcher = new FileSystemWatcher("D:/Practice");
-            watcher.NotifyFilter = NotifyFilters.Attributes | NotifyFilters.CreationTime | NotifyFilters.DirectoryName |
+            OutputWatcher.NotifyFilter = InputWatcher.NotifyFilter = NotifyFilters.Attributes | NotifyFilters.CreationTime | NotifyFilters.DirectoryName |
                                     NotifyFilters.FileName | NotifyFilters.LastAccess | NotifyFilters.LastWrite |
                                     NotifyFilters.Security | NotifyFilters.Size;
-            watcher.Filter = "*.*";
-            watcher.Changed += new FileSystemEventHandler(Watcher_Changed);
-            watcher.Created += new FileSystemEventHandler(Watcher_Created);
-            watcher.Deleted += new FileSystemEventHandler(Watcher_Deleted);
-            watcher.Renamed += new RenamedEventHandler(Watcher_Renamed);
-            watcher.IncludeSubdirectories = true;
-            watcher.EnableRaisingEvents = true;
+
+            OutputWatcher.Filter = InputWatcher.Filter = "*.*";
+
+            InputWatcher.Changed += new FileSystemEventHandler(InputWatcher_Changed);
+            InputWatcher.Created += new FileSystemEventHandler(InputWatcher_Created);
+            InputWatcher.Deleted += new FileSystemEventHandler(InputWatcher_Deleted);
+            InputWatcher.Renamed += new RenamedEventHandler(InputWatcher_Renamed);
+            InputWatcher.IncludeSubdirectories = true;
+            InputWatcher.EnableRaisingEvents = true;
+
+            OutputWatcher.Changed += new FileSystemEventHandler(OutputWatcher_Changed);
+            OutputWatcher.Created += new FileSystemEventHandler(OutputWatcher_Created);
+            OutputWatcher.Deleted += new FileSystemEventHandler(OutputWatcher_Deleted);
+            OutputWatcher.Renamed += new RenamedEventHandler(OutputWatcher_Renamed);
+            OutputWatcher.IncludeSubdirectories = true;
+            OutputWatcher.EnableRaisingEvents = true;
         }
 
-        private void Watcher_Changed(object e, FileSystemEventArgs args)
+        private void ProcessResult(int FolderType, FileSystemEventArgs args, RenamedEventArgs rargs)
         {
-            File.AppendAllText(@"D:\sample.txt", "\r\f" + args.ChangeType + ":" + args.FullPath);
+            var type = FolderType.Equals(1) ? "Input : " : "Output : ";
+            if (rargs != null)
+            {
+                File.AppendAllText(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\WatchDog.txt", Environment.NewLine + type + args.ChangeType + ":" + rargs.FullPath);
+                File.AppendAllText(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\WatchDog.txt", Environment.NewLine + type + args.ChangeType + ":" + rargs.OldFullPath);
+            }
+            else
+            {
+                File.AppendAllText(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\WatchDog.txt", Environment.NewLine + type + args.ChangeType + ":" + args.FullPath);
+            }
         }
 
-        private void Watcher_Created(object e, FileSystemEventArgs args)
+        private void InputWatcher_Changed(object e, FileSystemEventArgs args)
         {
-            File.AppendAllText(@"D:\sample.txt", "\r\f" + args.ChangeType + ":" + args.FullPath);
+            ProcessResult(1, args, null);
         }
 
-        private void Watcher_Deleted(object e, FileSystemEventArgs args)
+        private void InputWatcher_Created(object e, FileSystemEventArgs args)
         {
-            File.AppendAllText(@"D:\sample.txt", "\r\f" + args.ChangeType + ":" + args.FullPath);
+            ProcessResult(1, args, null);
         }
 
-        private void Watcher_Error(object e, ErrorEventArgs args)
+        private void InputWatcher_Deleted(object e, FileSystemEventArgs args)
+        {
+            ProcessResult(1, args, null);
+        }
+
+        private void InputWatcher_Error(object e, ErrorEventArgs args)
         {
             return;
         }
 
-        private void Watcher_Renamed(object e, RenamedEventArgs args)
+        private void InputWatcher_Renamed(object e, RenamedEventArgs args)
         {
-            File.AppendAllText(@"D:\sample.txt", "\r\f" + args.ChangeType + ":" + args.FullPath);
-            File.AppendAllText(@"D:\sample.txt", "\r\f" + args.ChangeType + ":" + args.OldFullPath);
+            ProcessResult(1, null, args);
+        }
+
+        private void OutputWatcher_Changed(object e, FileSystemEventArgs args)
+        {
+            ProcessResult(2, args, null);
+        }
+
+        private void OutputWatcher_Created(object e, FileSystemEventArgs args)
+        {
+            ProcessResult(2, args, null);
+        }
+
+        private void OutputWatcher_Deleted(object e, FileSystemEventArgs args)
+        {
+            ProcessResult(2, args, null);
+        }
+
+        private void OutputWatcher_Error(object e, ErrorEventArgs args)
+        {
+            return;
+        }
+
+        private void OutputWatcher_Renamed(object e, RenamedEventArgs args)
+        {
+            ProcessResult(2, null, args);
         }
     }
 }

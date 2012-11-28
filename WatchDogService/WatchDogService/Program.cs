@@ -6,19 +6,20 @@ using System.Text;
 
 namespace WatchDogService
 {
-    static class Program
+    public class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+
         static void Main()
         {
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[] 
-			{ 
-				new WatchDogService() 
-			};
-            ServiceBase.Run(ServicesToRun);            
+            { 
+                new WatchDogService()
+            };
+            ServiceBase.Run(ServicesToRun);
         }
     }
 }

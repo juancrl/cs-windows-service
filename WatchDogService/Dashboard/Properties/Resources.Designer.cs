@@ -59,12 +59,5 @@ namespace Dashboard.Properties {
                 resourceCulture = value;
             }
         }
-        
-        internal static System.Drawing.Bitmap logo {
-            get {
-                object obj = ResourceManager.GetObject("logo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
     }
 }

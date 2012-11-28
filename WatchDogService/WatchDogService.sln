@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchDogService", "WatchDog
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboard", "Dashboard\Dashboard.csproj", "{FD0343A2-0DEC-4CE3-B4D0-CBBC6EB6232D}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "WatchDogServiceSetup", "WatchDogServiceSetup\WatchDogServiceSetup.vdproj", "{0D3A0D3B-0B56-4B8F-A94A-636F6C22A01A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -19,6 +21,8 @@ Global
 		{FD0343A2-0DEC-4CE3-B4D0-CBBC6EB6232D}.Debug|x86.Build.0 = Debug|x86
 		{FD0343A2-0DEC-4CE3-B4D0-CBBC6EB6232D}.Release|x86.ActiveCfg = Release|x86
 		{FD0343A2-0DEC-4CE3-B4D0-CBBC6EB6232D}.Release|x86.Build.0 = Release|x86
+		{0D3A0D3B-0B56-4B8F-A94A-636F6C22A01A}.Debug|x86.ActiveCfg = Debug
+		{0D3A0D3B-0B56-4B8F-A94A-636F6C22A01A}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
