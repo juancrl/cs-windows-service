@@ -34,20 +34,21 @@
             // WatchDogProcessInstaller
             // 
             this.WatchDogProcessInstaller.Account = System.ServiceProcess.ServiceAccount.LocalSystem;
+            this.WatchDogProcessInstaller.Installers.AddRange(new System.Configuration.Install.Installer[] {
+            this.WatchDogInstaller});
             this.WatchDogProcessInstaller.Password = null;
             this.WatchDogProcessInstaller.Username = null;
             // 
             // WatchDogInstaller
             // 
             this.WatchDogInstaller.Description = "WatchDogInstaller";
-            this.WatchDogInstaller.DisplayName = "WatchDog";
+            this.WatchDogInstaller.DisplayName = "WatchDogService";
             this.WatchDogInstaller.ServiceName = "WatchDogService";
             this.WatchDogInstaller.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller
             // 
             this.Installers.AddRange(new System.Configuration.Install.Installer[] {
-            this.WatchDogInstaller,
             this.WatchDogProcessInstaller});
 
         }

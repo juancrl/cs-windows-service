@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Configuration;
+using System.IO;
 
 namespace Dashboard
 {
@@ -16,7 +17,7 @@ namespace Dashboard
         {
             InitializeComponent();
             txtInputPath.Text=ConfigurationManager.AppSettings["INPUT_FOLDER"].ToString();
-            txtOutputPath.Text = ConfigurationManager.AppSettings["OUTPUT_FOLDER"].ToString();
+            txtOutputPath.Text = ConfigurationManager.AppSettings["OUTPUT_FOLDER"].ToString();            
         }
 
         private void btnBrowseInput_Click(object sender, EventArgs e)
@@ -37,12 +38,20 @@ namespace Dashboard
             {
                 if (!txtInputPath.Text.Equals("") && !txtOutputPath.Text.Equals(""))
                 {
-                    Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                    config.AppSettings.Settings["INPUT_FOLDER"].Value = txtInputPath.Text;
-                    config.AppSettings.Settings["OUTPUT_FOLDER"].Value = txtOutputPath.Text;
-                    config.Save(ConfigurationSaveMode.Minimal, true);
-                    ConfigurationManager.RefreshSection("appSettings");
-                    this.Close();
+                    if (Directory.Exists(txtInputPath.Text) &&
+                        Directory.Exists(txtOutputPath.Text))
+                    {
+                        Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                        config.AppSettings.Settings["INPUT_FOLDER"].Value = txtInputPath.Text;
+                        config.AppSettings.Settings["OUTPUT_FOLDER"].Value = txtOutputPath.Text;
+                        config.Save(ConfigurationSaveMode.Minimal, true);
+                        ConfigurationManager.RefreshSection("appSettings");
+                        this.Close();                        
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please Service Folders does not exists...!");
+                    }
                 }
                 else
                 {
@@ -53,6 +62,11 @@ namespace Dashboard
             catch(Exception ex)
             {            
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

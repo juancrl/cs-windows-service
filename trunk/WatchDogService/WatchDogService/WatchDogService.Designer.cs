@@ -31,6 +31,7 @@
             // 
             // WatchDogService
             // 
+            this.CanPauseAndContinue = true;
             this.CanShutdown = true;
             this.ServiceName = "WatchDogService";
 
