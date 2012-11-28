@@ -8,12 +8,28 @@ namespace Dashboard
     {
         public MainForm()
         {
-            InitializeComponent(); serviceController1.ServiceName = "Service1";
+            InitializeComponent(); serviceController1.ServiceName = System.Configuration.ConfigurationManager.AppSettings["SERVICE_NAME"].ToString();
         }
 
         public void UpdateStatus()
         {
-            var status = serviceController1.Status.ToString(); if (status.Equals("Running")) { btnStop.Visible = true; btnRestart.Visible = true; btnStart.Visible = false; toolStripStatusLabel2.ForeColor = label2.ForeColor = Color.Green; } else if (status.Equals("Stopped")) { btnStop.Visible = false; btnRestart.Visible = false; btnStart.Visible = true; toolStripStatusLabel2.ForeColor = label2.ForeColor = Color.Maroon; } toolStripStatusLabel2.Text = label2.Text = status; label5.Text = System.Configuration.ConfigurationManager.AppSettings["INPUT_FOLDER"].ToString(); label6.Text = System.Configuration.ConfigurationManager.AppSettings["OUTPUT_FOLDER"].ToString();
+            var status = serviceController1.Status.ToString();
+            if (status.Equals("Running"))
+            {
+                btnStop.Visible = true;
+                btnRestart.Visible = true; btnStart.Visible = false;
+                toolStripStatusLabel2.ForeColor = label2.ForeColor = Color.Green;
+            }
+            else if (status.Equals("Stopped"))
+            {
+                btnStop.Visible = false;
+                btnRestart.Visible = false;
+                btnStart.Visible = true;
+                toolStripStatusLabel2.ForeColor = label2.ForeColor = Color.Maroon;
+            }
+            toolStripStatusLabel2.Text = label2.Text = status;
+            label5.Text = System.Configuration.ConfigurationManager.AppSettings["INPUT_FOLDER"].ToString();
+            label6.Text = System.Configuration.ConfigurationManager.AppSettings["OUTPUT_FOLDER"].ToString();
         }
 
         private void aboutToolStripMenuItem1_Click(object sender, EventArgs e)
