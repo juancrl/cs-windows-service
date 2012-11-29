@@ -16,20 +16,33 @@ namespace Dashboard
         private void Form1_Load(object sender, EventArgs e)
         {
             UpdateStatus();
+            richTextBox1.Text = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\WatchDog.txt");
+            richTextBox1.Refresh();
+            WatchFile();
         }
 
         private void WatchFile()
         {
-            FileSystemWatcher fsw = new FileSystemWatcher(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory));
-            fsw.Filter = @"\WatchDog.txt";
-            fsw.NotifyFilter = NotifyFilters.Size | NotifyFilters.LastWrite | NotifyFilters.LastAccess;
-            fsw.Changed +=new FileSystemEventHandler(fsw_Changed);
+            try
+            {
+                FileSystemWatcher fsw = new FileSystemWatcher(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory));
+                fsw.Filter = @"WatchDog.txt";
+                fsw.NotifyFilter = NotifyFilters.Attributes | NotifyFilters.CreationTime | NotifyFilters.DirectoryName |
+                                    NotifyFilters.FileName | NotifyFilters.LastAccess | NotifyFilters.LastWrite |
+                                    NotifyFilters.Security | NotifyFilters.Size;
+                fsw.Changed += new FileSystemEventHandler(fsw_Changed);
+            }
+            catch (Exception e) { }
         }
 
         private void fsw_Changed(object e, FileSystemEventArgs args)
         {
-            //richTextBox1.Text = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\WatchDog.txt");
-            //richTextBox1.Refresh();            
+            try
+            {
+                richTextBox1.Text = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\WatchDog.txt");
+                richTextBox1.Refresh();
+            }
+            catch (Exception ex) { }
         }
 
         public void UpdateStatus()
@@ -49,7 +62,7 @@ namespace Dashboard
                     btnRestart.Visible = false;
                     btnStart.Visible = true;
                     toolStripStatusLabel4.ForeColor = label2.ForeColor = Color.Maroon;
-                }                
+                }
                 toolStripStatusLabel4.Text = label2.Text = status;
 
                 if (System.Configuration.ConfigurationManager.AppSettings["INPUT_FOLDER"].ToString() == "" ||
@@ -58,7 +71,7 @@ namespace Dashboard
                     MessageBox.Show("Please choose Service Folders...!");
                     showSettingsWindows();
                 }
-                else if(!Directory.Exists(System.Configuration.ConfigurationManager.AppSettings["INPUT_FOLDER"].ToString()) ||
+                else if (!Directory.Exists(System.Configuration.ConfigurationManager.AppSettings["INPUT_FOLDER"].ToString()) ||
                         !Directory.Exists(System.Configuration.ConfigurationManager.AppSettings["OUTPUT_FOLDER"].ToString()))
                 {
                     MessageBox.Show("Please Service Folders does not exists...!");
@@ -69,7 +82,7 @@ namespace Dashboard
                     label5.Text = System.Configuration.ConfigurationManager.AppSettings["INPUT_FOLDER"].ToString();
                     label6.Text = System.Configuration.ConfigurationManager.AppSettings["OUTPUT_FOLDER"].ToString();
                 }
-                WatchFile();
+
             }
             catch (Exception ex)
             {
@@ -105,7 +118,8 @@ namespace Dashboard
             try
             {
                 string[] args = { System.Configuration.ConfigurationManager.AppSettings["INPUT_FOLDER"].ToString(), 
-                                    System.Configuration.ConfigurationManager.AppSettings["OUTPUT_FOLDER"].ToString() };
+                                    System.Configuration.ConfigurationManager.AppSettings["OUTPUT_FOLDER"].ToString(),
+                                    Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)};
                 serviceController1.Start(args);
                 serviceController1.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running, TimeSpan.FromSeconds(30));
                 UpdateStatus();
@@ -149,6 +163,16 @@ namespace Dashboard
         private void viewHelpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Help...!", "", MessageBoxButtons.OK);
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("explorer.exe", label5.Text);
+        }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("explorer.exe", label6.Text);
         }
     }
 }

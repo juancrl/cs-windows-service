@@ -21,11 +21,8 @@ namespace WatchDogService
         
         protected override void OnStart(string[] args)
         {
-            //System.Diagnostics.Debugger.Launch();
-            if (args.Length < 2)
-            {
-                args = new string[] { Environment.SystemDirectory.ToString(), Environment.SystemDirectory.ToString() };
-            }
+            args = new string[] { "D:\\Practice\\Input", "D:\\Practice\\Output", "C:\\Users\\praveenm\\Desktop" };
+            System.Diagnostics.Debugger.Launch();
             FSWatcher = new FSWatcher(args);
             FSWatcher.RunService();
         }

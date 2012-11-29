@@ -9,14 +9,16 @@ namespace WatchDogService
         private FileSystemWatcher OutputWatcher { get; set; }
         private string InputFolder { get; set; }
         private string OutputFolder { get; set; }
+        private string DesktopFolder { get; set; }
 
         public FSWatcher() { }
         public FSWatcher(string[] args)
         {
             InputWatcher = new FileSystemWatcher(args[0]);
-            OutputWatcher = new FileSystemWatcher(args[1]);
+            OutputWatcher = new FileSystemWatcher(args[1]);            
             InputFolder = args[0];
             OutputFolder = args[1];
+            DesktopFolder = args[2];
         }
 
 
@@ -45,31 +47,34 @@ namespace WatchDogService
 
         private void ProcessResult(int FolderType, FileSystemEventArgs args, RenamedEventArgs rargs)
         {
-            var type = FolderType.Equals(1) ? "Input : " : "Output : ";
+            var type = FolderType.Equals(1) ? "Input | " : "Output | ";
             if (rargs != null)
             {
-                File.AppendAllText(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\WatchDog.txt", Environment.NewLine + type + args.ChangeType + ":" + rargs.FullPath);
-                File.AppendAllText(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\WatchDog.txt", Environment.NewLine + type + args.ChangeType + ":" + rargs.OldFullPath);
+                File.AppendAllText(DesktopFolder + @"\WatchDog.txt", Environment.NewLine + DateTime.Now + " | " + type + rargs.ChangeType + " | " + rargs.FullPath);
+                File.AppendAllText(DesktopFolder + @"\WatchDog.txt", Environment.NewLine + DateTime.Now + " | " + type + rargs.ChangeType + " | " + rargs.OldFullPath);
             }
             else
             {
-                File.AppendAllText(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\WatchDog.txt", Environment.NewLine + type + args.ChangeType + ":" + args.FullPath);
+                File.AppendAllText(DesktopFolder + @"\WatchDog.txt", Environment.NewLine + DateTime.Now + " | " + type + args.ChangeType + " | " + args.FullPath);
             }
         }
 
         private void InputWatcher_Changed(object e, FileSystemEventArgs args)
         {
             ProcessResult(1, args, null);
+            File.Replace(InputFolder + @"\" + args.Name, OutputFolder + @"\" + args.Name, InputFolder + @"\" + args.Name);
         }
 
         private void InputWatcher_Created(object e, FileSystemEventArgs args)
         {
             ProcessResult(1, args, null);
+            File.Copy(InputFolder + @"\" + args.Name, OutputFolder + @"\" + args.Name, true);
         }
 
         private void InputWatcher_Deleted(object e, FileSystemEventArgs args)
         {
             ProcessResult(1, args, null);
+            File.Delete(OutputFolder + @"\" + args.Name);
         }
 
         private void InputWatcher_Error(object e, ErrorEventArgs args)
@@ -80,6 +85,7 @@ namespace WatchDogService
         private void InputWatcher_Renamed(object e, RenamedEventArgs args)
         {
             ProcessResult(1, null, args);
+            File.Move(OutputFolder + @"\" + args.OldName, OutputFolder + @"\" + args.Name);
         }
 
         private void OutputWatcher_Changed(object e, FileSystemEventArgs args)
