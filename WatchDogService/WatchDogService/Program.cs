@@ -13,7 +13,7 @@ namespace WatchDogService
         /// </summary>
 
         static void Main()
-        {
+        {            
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[] 
             { 
