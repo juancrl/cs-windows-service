@@ -61,6 +61,27 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0,Profile=Client"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4 Client Profile (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.0,Profile=Client"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -77,6 +98,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -251,9 +280,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:WatchDogServiceSetup"
+        "ProductName" = "8:WatchDog"
         "ProductCode" = "8:{A43F50A3-540C-440F-9204-88CCB658167F}"
-        "PackageCode" = "8:{AB60A1FD-A5C2-4407-8744-FA576DEAA88A}"
+        "PackageCode" = "8:{2F0F88C7-E9E9-4FDC-8DF2-E5A696AEDABA}"
         "UpgradeCode" = "8:{B9334F57-5884-474D-9131-9B9858F682F2}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -264,13 +293,13 @@
         "Manufacturer" = "8:Hewlett-Packard Company"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:WatchDogServiceSetup"
+        "Title" = "8:WatchDog"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Hewlett-Packard Company"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_38EABA72002F4A109A9F28E203D5EDFD"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -375,16 +404,16 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_EC66E4C1553B41EFAC47A6DA1AD34A28"
             {
-            "Name" = "8:Shortcut to Primary output from Dashboard (Active)"
+            "Name" = "8:Dashboard"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
             "Target" = "8:_D557F8384989416B8FA790B64D8A87DA"
-            "Folder" = "8:_689D991DF64E4B0EA9365B35499059DF"
-            "WorkingFolder" = "8:_44452D96063C499DBD0870C8C2F28133"
-            "Icon" = "8:"
+            "Folder" = "8:_44452D96063C499DBD0870C8C2F28133"
+            "WorkingFolder" = "8:_689D991DF64E4B0EA9365B35499059DF"
+            "Icon" = "8:_38EABA72002F4A109A9F28E203D5EDFD"
             "Feature" = "8:"
             }
         }
