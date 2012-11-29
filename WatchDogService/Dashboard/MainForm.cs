@@ -40,7 +40,8 @@ namespace Dashboard
             try
             {
                 richTextBox1.Text = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\WatchDog.txt");
-                richTextBox1.Refresh();
+                richTextBox1.Update();
+                richTextBox1.Refresh();                
             }
             catch (Exception ex) { }
         }
